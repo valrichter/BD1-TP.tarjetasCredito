@@ -1,6 +1,6 @@
 # Base de Datos 1
 
-## BD--2S-2021
+## BD-TarjetasCredito-2S-2021
 
 ### BREVE EXPLICACION DE LA CONSIGNA
 El trabajo práctico tiene como objetivo implementar una pequeña base de datos encargada 
@@ -11,4 +11,4 @@ Para mas informacion leer el archivo informe.asciidoc
 #### ACLARACIONES
 
 1) Algunas funciones tienen explicacion dentro del codigo
-2) Descargar el repositorio e iniciar el archivo src/application/Main.java en algun IDE de Java
+2) Descargar el repositorio e iniciar el archivo main.go
