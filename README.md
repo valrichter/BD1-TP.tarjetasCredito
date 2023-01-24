@@ -1,11 +1,8 @@
-# Programacion 3
+# Base de Datos 1
 
-## P3-AlgoritmoGoloso-2S-2021
+## BD--2S-2021
 
 ### BREVE EXPLICACION DE LA CONSIGNA
-El objetivo del trabajo practico es implementar un algoritmo goloso para asignar arbitros
-a partidos de un campeonato, intentando maximizar la equidad de la asignacion. Se debera 
-tambien implementar una aplicacion visual para ejecutar este algoritmo y visualizar sus resultados.
 Para mas informacion leer el archivo Consigna.pdf
 
 #### ACLARACIONES
