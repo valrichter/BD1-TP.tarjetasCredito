@@ -5,7 +5,7 @@
 ### BREVE EXPLICACION DE LA CONSIGNA
 El trabajo práctico tiene como objetivo implementar una pequeña base de datos encargada 
 de almacenar y consultar informacion relacionada a la compras realizadas con tarjetas de 
-credito por distintos clientes\
+credito por distintos clientes.\
 Para mas informacion leer el archivo informe.asciidoc
 
 #### ACLARACIONES
