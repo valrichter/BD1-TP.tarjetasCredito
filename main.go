@@ -3,17 +3,24 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
 	"log"
+
+	_ "github.com/lib/pq"
 )
 
-var db, _ = sql.Open("postgres", "user=postgres host=localhost dbname=negocio sslmode=disable")
+var connectionStr = "user=postgres password=postgres dbname=postgres port=5432 sslmode=disable"
+var db, dbErr = sql.Open("postgres", connectionStr)
 
 func main() {
 
+	if dbErr != nil {
+		panic(dbErr)
+	}
+	fmt.Println("Conectado con Postgres")
+
 	defer db.Close()
 
-	var option int = -1
+	var option = -1
 
 	for option != 0 {
 		fmt.Println()
@@ -60,7 +67,7 @@ func main() {
 			generarResumenes()
 		}
 		if option == 10 {
-			MainNOSQL()
+			//MainNOSQL()
 		}
 		if option == 0 {
 			//salir()
@@ -68,28 +75,22 @@ func main() {
 	}
 }
 
-//-------------------------------------------------------------------------------------crearDataBase()------------------
+// -------------------------------------------------------------------------------------crearDataBase()------------------
 func crearDataBase() {
-	dbDefault, err := sql.Open("postgres", "user=postgres host=localhost dbname=postgres sslmode=disable") // conexion a psql
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer dbDefault.Close()
 	fmt.Println("Conectado con Postgres")
 
-	_, err = dbDefault.Exec(`drop database if exists negocio`)
+	_, err := db.Exec(`drop database if exists negocio`)
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = dbDefault.Exec(`create database negocio`)
+	_, err = db.Exec(`create database negocio`)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Print("'Base de datos creada'\n")
 }
 
-//-------------------------------------------------------------------------------------crearTablas()--------------------
+// -------------------------------------------------------------------------------------crearTablas()--------------------
 func crearTablas() {
 	_, err := db.Exec(`	CREATE TABLE cliente( nrocliente serial, nombre text, apellido text, domicilio text, telefono char(12));
 						CREATE TABLE tarjeta( nrotarjeta char(16), nrocliente int, validadesde char(6), validahasta char(6), codseguridad char(4),limitecompra decimal(8,2), estado char(10) );	
@@ -108,7 +109,7 @@ func crearTablas() {
 	fmt.Print("'Tablas creadas'\n")
 }
 
-//-------------------------------------------------------------------------------------crearPKsFKs()--------------------
+// -------------------------------------------------------------------------------------crearPKsFKs()--------------------
 func crearPKsFKs() {
 	_, err := db.Query(`
 						ALTER TABLE cliente     ADD CONSTRAINT cliente_pk   PRIMARY KEY (nrocliente);
@@ -139,7 +140,7 @@ func crearPKsFKs() {
 	fmt.Print("'PKs y FKs creadas'\n")
 }
 
-//-------------------------------------------------------------------------------------borrarPKsFKs()-------------------
+// -------------------------------------------------------------------------------------borrarPKsFKs()-------------------
 func borrarPKsFKs() {
 	_, err := db.Query(`
 						ALTER TABLE cierre DROP CONSTRAINT cierre_pk; 
@@ -178,7 +179,7 @@ func borrarPKsFKs() {
 	fmt.Print("'PKs y FKs eliminadas'\n")
 }
 
-//-------------------------------------------------------------------------------------cargarTablas()-------------------
+// -------------------------------------------------------------------------------------cargarTablas()-------------------
 func cargarTablas() {
 	cargarClientes()
 	cargarTarjetas()
@@ -311,7 +312,7 @@ func cargarCierresSP() {
 	fmt.Print("'Cierres cargados'\n")
 }
 
-//-------------------------------------------------------------------------------------cargarConsumos()-----------------
+// -------------------------------------------------------------------------------------cargarConsumos()-----------------
 func cargarConsumos() {
 	_, err := db.Exec(`
 			-- cliente 2
@@ -360,7 +361,7 @@ func cargarConsumos() {
 	fmt.Print("'Consumos cargados'\n")
 }
 
-//-------------------------------------------------------------------------------------crearSPyTriggers()---------------
+// -------------------------------------------------------------------------------------crearSPyTriggers()---------------
 func crearSPyTriggers() {
 	alertaClienteTrigger()
 	alertasComprasTrigger()
@@ -372,7 +373,7 @@ func crearSPyTriggers() {
 	fmt.Print("'SP's y TRIGGERS CREADOS'\n")
 }
 
-//--------------------------------------------------------------------------------comprasPendientesDePagoSP()---------------
+// --------------------------------------------------------------------------------comprasPendientesDePagoSP()---------------
 func comprasPendientesDePagoSP() {
 	_, err := db.Query(`
 		CREATE OR REPLACE FUNCTION compras_pendientes_de_pago(i_nrotarjeta char) returns int as $$
@@ -395,7 +396,7 @@ func comprasPendientesDePagoSP() {
 	fmt.Print("'compras_pendientes_de_pago SP creado'\n")
 }
 
-//--------------------------------------------------------------------------------autorizarCompraSP()---------------
+// --------------------------------------------------------------------------------autorizarCompraSP()---------------
 func autorizarCompraSP() {
 	_, err := db.Query(`
 		CREATE OR REPLACE FUNCTION autorizar_compra(i_n_tarjeta char, i_cod_seguridad char,i_n_comercio int, i_monto int) returns  boolean as $$
