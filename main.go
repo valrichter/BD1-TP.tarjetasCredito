@@ -69,9 +69,6 @@ func main() {
 		if option == 9 {
 			generarResumenes()
 		}
-		// if option == 10 {
-		// 	//MainNOSQL()
-		// }
 	}
 }
 
