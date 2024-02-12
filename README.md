@@ -46,7 +46,7 @@ Dificultad en la  asignacion de valores para las claves primarias cada vez que s
 
 ### 3. Dificultades
 
-Tuvimos un problema con la conexion entre modulos de go pero pudimos solucionarlo. Se generaron dudas con la relacion entre archivos que existian en diferentes directorios y que no podian comunicarse entre si, optamos por tener un unico directorio y colocar los archivos de  tanto la creacion y manipulacion de la base de datos mediante go, como los archivos encargados de la creacion y manipulacion de la base de datos NoSQL.
+Tuvimos un problema con la conexion entre modulos de go pero pudimos solucionarlo. Se generaron dudas con la relacion entre archivos que existian en diferentes directorios y que no podian comunicarse entre si, optamos por tener un unico directorio y colocar los archivos de la creacion y manipulacion de la base de datos.
 
 ## Implementación
 
@@ -110,9 +110,6 @@ Si un ```consumo``` es valido, pasa a la tabla ```compra```
 - `generarResumenes()`
   - Carga en las tablas cabecera y detalle los datos correspondientes con respecto a las compras realizadas por un cliente en un periodo determinado, estas peticiones de resumenes seran ejecutadas cuando en el momento se cree  el SP `generar_resumenes()` que dentro hace la llamada a `generacion_de_resumen()` de un cliente determinado
 
-- `MainNOSQL()`
-  - Mediante un archivo externo de go que conecta con una base de datos NoSQL se ingresaran datos a mano de 3 clientes, 3 tarjetas y 3 compras en 3 distintos objetos, se vera el resultado de estos objetos en la terminal
-
 ### Storage Procedures que se crean en SQL al ejecutar esta funcion. Hay más que se crearon antes o despues, 2 para ser exactos `cargarCierresSP()` y `generar``resumenes()`
 
 - `autorizar_compra` (la crea la funcion `autorizarCompraSP()` de go ).
@@ -136,9 +133,6 @@ Si un ```consumo``` es valido, pasa a la tabla ```compra```
 
 - `generarResumen()`
   - carga en las tablas cabecera y detalle los datos correspondientes con respecto a las compras realizadas por un cliente en un periodo determinado, estas peticiones de resumenes seran ejecutadas cuando en el momento se cree el SP `generar_resumenes()` que dentro hace la llamada a `generacion_de_resumen()` de un cliente determinado
-
-- `MainNOSQL()`
-  - Mediante un archivo externo de go que conecta con una base de datos NoSQL se ingresaran datos a mano de 3 clientes, 3 tarjetas y 3 compras en 3 distintos objetos, se vera el resultado de estos objetos en la terminal
 
 ### Explicacion de SP en ```negocio.sql```
 
