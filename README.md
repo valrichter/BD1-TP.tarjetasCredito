@@ -3,11 +3,10 @@
 El trabajo práctico tiene como objetivo implementar una pequeña base de datos encargada de almacenar y consultar informacion relacionada a la compras realizadas con tarjetas de credito por distintos clientes.\
 Para mas informacion leer el archivo informe.asciidoc
 
-## EJECUCION
+## EJECUCION EN LINUX
 
-1) Ejecutar el comando `docker-compose up` para levantar el la app
-2) Ingresar al container de la app
-3) Ejecutar el comando `go run main.go`
+1) Ejecutar el comando `make docker_up` para levantar el la app y el postgres
+2) Ejecutar el comando `go run main.go` dentro del contenedor
 
 - Algunas funciones tienen explicacion dentro del codigo
 
