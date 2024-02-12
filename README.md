@@ -105,33 +105,33 @@ podemos cargar la tabla ```consumo``` y usar una funcion para aprobar o no esos 
   - Carga informacion en la tabla ```consumo```, cada consumo tiene un ```nrotarjeta``` (valido o no), un ```codseguridad``` (codigo de seguridad asociado a la tarjeta, puede ser correcto o incorrecto), ```nrocomercio```(numero de comercio existente o no) y un ```monto```(monto del consumo)
 
 - `crearSPyTriggers()`
-  - Crea las funciones en go que crean los Storage Procedures y disparan los triggers necesarios para la correcta administracion de los datos que fueron ingresados, excepto el Storage Procedure `cargarCierresSP()` que fue creado cuando se ejecutó la funcion `cargarTablas()` y `generar```resumenes()` que sera creada y ejecutada en el momento cuando el usuario presione la opcion 9 del menu
+  - Crea las funciones en go que crean los Storage Procedures y disparan los triggers necesarios para la correcta administracion de los datos que fueron ingresados, excepto el Storage Procedure `cargarCierresSP()` que fue creado cuando se ejecutó la funcion `cargarTablas()` y `generar_resumenes()` que sera creada y ejecutada en el momento cuando el usuario presione la opcion 9 del menu
 
 - `pasarCosasAcompraORechazo()`
-  - Evalua todos los consumos que estan cargados en la tabla ```consumo```, cada uno pasa por revision del SP `autorizar```compra`, si un consumo es invalido no pasa a la tabla compra y pasa a la tabla rechazo a la vez que la se genera un nuevo registro en la tabla ```alerta``` con esos datos.
+  - Evalua todos los consumos que estan cargados en la tabla ```consumo```, cada uno pasa por revision del SP `autorizar_compra`, si un consumo es invalido no pasa a la tabla compra y pasa a la tabla rechazo a la vez que la se genera un nuevo registro en la tabla ```alerta``` con esos datos.
 Si un ```consumo``` es valido, pasa a la tabla ```compra```
 
 - `generarResumenes()`
-  - Carga en las tablas cabecera y detalle los datos correspondientes con respecto a las compras realizadas por un cliente en un periodo determinado, estas peticiones de resumenes seran ejecutadas cuando en el momento se cree  el SP `generar```resumenes()` que dentro hace la llamada a `generacion```de```resumen()` de un cliente determinado
+  - Carga en las tablas cabecera y detalle los datos correspondientes con respecto a las compras realizadas por un cliente en un periodo determinado, estas peticiones de resumenes seran ejecutadas cuando en el momento se cree  el SP `generar_resumenes()` que dentro hace la llamada a `generacion_de_resumen()` de un cliente determinado
 
 - `MainNOSQL()`
   - Mediante un archivo externo de go que conecta con una base de datos NoSQL se ingresaran datos a mano de 3 clientes, 3 tarjetas y 3 compras en 3 distintos objetos, se vera el resultado de estos objetos en la terminal
 
 ### Storage Procedures que se crean en SQL al ejecutar esta funcion. Hay más que se crearon antes o despues, 2 para ser exactos `cargarCierresSP()` y `generar``resumenes()`
 
-- `autorizar``compra` (la crea la funcion `autorizarCompraSP()` de go ).
+- `autorizar_compra` (la crea la funcion `autorizarCompraSP()` de go ).
 
-- `simular``pasar``consumos``a``compra``o``rechazo()` (la crea la funcion `simularPasarConsumosAcompraORechazoSP()` de go)
+- `simular_pasar_consumos_a_compra_o_rechazo()` (la crea la funcion `simularPasarConsumosAcompraORechazoSP()` de go)
 
-- `compras``pendientes``de``pago()` (la crea la funcion `comprasPendientesDePagoSP() de go`).
+- `compras_pendientes_de_pago()` (la crea la funcion `comprasPendientesDePagoSP() de go`).
 
-- `generacion``de``resumen()` (la crea la funcion generarResumenesSP() de go)
+- `generacion_de_resumen()` (la crea la funcion generarResumenesSP() de go)
 
-- `generar``resumenes()` (la crea la funcion generarResumenes() de go tiene muchos `generacion``de``resumen()`).
+- `generar_resumenes()` (la crea la funcion generarResumenes() de go tiene muchos `generacion_de_resumen()`).
 
-- `t``a()` (la crea la funcion `alertaClienteTrigger()`)
+- `t_a()` (la crea la funcion `alertaClienteTrigger()`)
 
-- `alertas``a``compras()` (la crea la funcion `alertasComprasTrigger()`)
+- `alertas_a_compras()` (la crea la funcion `alertasComprasTrigger()`)
 
 ### Triggers que se crean en SQL
 
@@ -139,27 +139,27 @@ Si un ```consumo``` es valido, pasa a la tabla ```compra```
   - Evalua todos los consumos que estan cargados en la tabla consumo, cada uno pasa por revision del SP autorizar``compra, si un consumo es invalido no pasa a la tabla compra y pasa a la tabla rechazo a la vez que la se genera un nuevo registro en la tabla alerta con esos datos. Si un consumo es valido, pasa a la tabla compra.
 
 - `generarResumen()`
-  - carga en las tablas cabecera y detalle los datos correspondientes con respecto a las compras realizadas por un cliente en un periodo determinado, estas peticiones de resumenes seran ejecutadas cuando en el momento se cree el SP `generar``resumenes()` que dentro hace la llamada a `generacion``de``resumen()` de un cliente determinado
+  - carga en las tablas cabecera y detalle los datos correspondientes con respecto a las compras realizadas por un cliente en un periodo determinado, estas peticiones de resumenes seran ejecutadas cuando en el momento se cree el SP `generar_resumenes()` que dentro hace la llamada a `generacion_de_resumen()` de un cliente determinado
 
 - `MainNOSQL()`
   - Mediante un archivo externo de go que conecta con una base de datos NoSQL se ingresaran datos a mano de 3 clientes, 3 tarjetas y 3 compras en 3 distintos objetos, se vera el resultado de estos objetos en la terminal
 
 ### Explicacion de SP en ```negocio.sql```
 
-- `cargar``cierres()`
+- `cargar_cierres()`
   - Se encarga de ingresar datos a la tabla ```cierre``` dinamicamente iniciando en una fecha
 
-- `autorizar``compra()`
+- `autorizar_compra()`
   - Se tiene consumos, cada consumo para pasar a ser una compra debe antes pasar por una autorizacion, esta funcion se encarga de hacer brindar esa autorizacion.
- Toma como parametros dos char's de maximo 16 caracteres, y dos enteros y devuelve un booleano. El primer parametro lo nombramos ``i``n``tarjeta``, el segundo ``i``cod``seguridad``, el tercero ``i``n``comercio`` y el ``cuarto i``monto``.
+ Toma como parametros dos char's de maximo 16 caracteres, y dos enteros y devuelve un booleano. El primer parametro lo nombramos `i_n_tarjeta`, el segundo `i_cod_seguridad`, el tercero `i_n_comercio` y el cuarto `i_monto`.
  Devuelve true si una tarjeta es valida y false si no lo es.
     - ¿En que se basa para determinar que una tarjeta sea valida?:
 
-    - Una tarjeta es valida cuando el codigo de tarjeta existe en la base de datos, el codigo asociado a esa tarjeta el correcto && cuando el estado de esta tarjeta no es ``vencida``, ``anulada``, ``suspendida``, y ``el monto total de compras sin pagar + i``monto < el limite de compra de la tarjeta``(encargado de chequearlo el SP `compras``pendientes``de``pago`). Sacamos el numero de la tarjeta del parametro ``i``n``tarjeta``, el codigo de la tarjeta del parametro ``i``cod``seguridad`` y verificamos si no sobrepasa, sumandole ``i``monto`` ,al monto total registrado hasta la fecha en compras no pagadas de esa tarjeta.
+    - Una tarjeta es valida cuando el codigo de tarjeta existe en la base de datos, el codigo asociado a esa tarjeta el correcto && cuando el estado de esta tarjeta no es `vencida`, `anulada`, `suspendida`, y el monto total de compras sin pagar + `i_monto` < el limite de compra de la tarjeta (encargado de chequearlo el SP `compras_pendientes_de_pago`). Sacamos el numero de la tarjeta del parametro `i_n_tarjeta`, el codigo de la tarjeta del parametro `i_cod_seguridad` y verificamos si no sobrepasa, sumandole `i_monto` ,al monto total registrado hasta la fecha en compras no pagadas de esa tarjeta.
 
-- `compras``pendientes``de``pago`
-  - Es una funcion interna que utiliza `autorizar``compra()`.
-Esta funcion toma como parametro un char de 16 caracteres al que denominamos ``i``nrotarjeta`` y devuelve un entero.
+- `compras_pendientes_de_pago`
+  - Es una funcion interna que utiliza `autorizar_compra()`.
+Esta funcion toma como parametro un char de 16 caracteres al que denominamos `i_nrotarjeta` y devuelve un entero.
 Se encarga de sumar los montos de todas las compras sin abonar que realizo una determinada tarjeta ingresada como parametro.
 Esta funcion por si sola no tiene mucho uso, es necesaria para evaluar si el monto total adeudado no excede el limite permitido.
 
