@@ -9,7 +9,9 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var connectionStr = "user=postgres password=postgres dbname=postgres port=5432 sslmode=disable"
+// Conexión SOLO con el container de postgres
+// Para local host: localhost:5432
+var connectionStr = "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
 var db, dbErr = sql.Open("postgres", connectionStr)
 
 func main() {
@@ -67,16 +69,14 @@ func main() {
 		if option == 9 {
 			generarResumenes()
 		}
-		if option == 10 {
-			//MainNOSQL()
-		}
+		// if option == 10 {
+		// 	//MainNOSQL()
+		// }
 	}
 }
 
 // -------------------------------------------------------------------------------------crearDataBase()------------------
 func crearDataBase() {
-	fmt.Println("Conectado con Postgres")
-
 	_, err := db.Exec(`drop database if exists negocio`)
 	if err != nil {
 		log.Fatal(err)
