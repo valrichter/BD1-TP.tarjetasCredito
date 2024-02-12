@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/fatih/color"
 	_ "github.com/lib/pq"
 )
 
@@ -24,17 +25,17 @@ func main() {
 
 	for option != 0 {
 		fmt.Println()
-		fmt.Println("1. Crear base de datos")
-		fmt.Println("2. Crear tablas")
-		fmt.Println("3, Crear PK's Y FK's")
-		fmt.Println("4. Eliminar PK's Y FK's")
-		fmt.Println("5. Cargar tablas")
-		fmt.Println("6. Cargar Consumos")
-		fmt.Println("7. Crear Stored Procedures y Triggers")
-		fmt.Println("8. Probar Consumos")
-		fmt.Println("9. Generar Resumen")
-		fmt.Println("10. Cargar datos NoSQL en BolDB")
-		fmt.Println("0. Salir")
+		fmt.Println(color.GreenString("1. Crear base de datos"))
+		fmt.Println(color.GreenString("2. Crear tablas"))
+		fmt.Println(color.GreenString("3. Crear PK's Y FK's"))
+		fmt.Println(color.GreenString("4. Eliminar PK's Y FK's"))
+		fmt.Println(color.GreenString("5. Cargar tablas"))
+		fmt.Println(color.GreenString("6. Cargar Consumos"))
+		fmt.Println(color.GreenString("7. Crear Stored Procedures y Triggers"))
+		fmt.Println(color.GreenString("8. Probar Consumos"))
+		fmt.Println(color.GreenString("9. Generar Resumen"))
+		fmt.Println(color.GreenString("10. Cargar datos NoSQL en BolDB"))
+		fmt.Println(color.GreenString("0. Salir"))
 		fmt.Print("Ingresar accion: ")
 
 		fmt.Scan(&option)
@@ -68,9 +69,6 @@ func main() {
 		}
 		if option == 10 {
 			//MainNOSQL()
-		}
-		if option == 0 {
-			//salir()
 		}
 	}
 }
@@ -484,8 +482,12 @@ func simularPasarConsumosAcompraORechazoSP() {
 }
 
 func pasarCosasAcompraORechazo() {
-	db.Exec(`SELECT simular_pasar_consumos_a_compra_o_rechazo();`)
+	_, err := db.Exec(`SELECT simular_pasar_consumos_a_compra_o_rechazo();`)
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	fmt.Print("'Cosumos testeados'\n")
 }
 
 //-------------------------------------------------------------------------------------resumenes SP y generarResumenes()---------------
@@ -572,7 +574,11 @@ func generarResumenes() {
 		log.Fatal(err)
 	}
 
-	db.Exec(`SELECT generar_resumenes();`)
+	_, err = db.Exec(`SELECT generar_resumenes();`)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Print("'Resumenes generados'\n")
 }
 
