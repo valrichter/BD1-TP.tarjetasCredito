@@ -2,12 +2,10 @@
 
 ## BD-TarjetasCredito-2S-2021
 
-### BREVE EXPLICACION DE LA CONSIGNA
-
 El trabajo práctico tiene como objetivo implementar una pequeña base de datos encargada de almacenar y consultar informacion relacionada a la compras realizadas con tarjetas de credito por distintos clientes.\
 Para mas informacion leer el archivo informe.asciidoc
 
-#### EJECUCION
+## EJECUCION
 
 1) Ejecutar el comando `docker-compose up` para levantar el la app
 2) Ingresar al container de la app
