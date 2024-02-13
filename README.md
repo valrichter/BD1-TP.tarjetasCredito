@@ -5,8 +5,17 @@ Para mas informacion leer el archivo informe.asciidoc
 
 ## EJECUCION EN LINUX
 
-1) Ejecutar el comando `make docker_up` para levantar el la app y el postgres
-2) Ejecutar el comando `go run main.go` dentro del contenedor
+1. Levantar el la app y el postgres
+
+   ```text
+   make docker_up
+   ```
+
+2. Correr la app
+
+   ```text
+   go run main.go
+   ```
 
 - Algunas funciones tienen explicacion dentro del codigo
 
